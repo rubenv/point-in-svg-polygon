@@ -1,0 +1,22 @@
+{
+    "bitwise": true,
+    "curly": true,
+    "eqeqeq": true,
+    "esnext": true,
+    "freeze": true,
+    "immed": true,
+    "indent": 4,
+    "latedef": true,
+    "laxbreak": true,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "quotmark": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "predef": [
+        "describe",
+        "it"
+    ]
+}

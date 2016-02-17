@@ -1,0 +1,38 @@
+{
+  "name": "point-in-svg-polygon",
+  "description": "Determine if a point is inside an SVG polygon.",
+  "version": "0.0.0",
+  "author": {
+    "name": "Ruben Vermeersch",
+    "email": "ruben@rocketeer.be",
+    "url": "https://rocketeer.be/"
+  },
+  "homepage": "https://github.com/rubenv/point-in-svg-polygon",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rubenv/point-in-svg-polygon.git"
+  },
+  "main": "./lib/index",
+  "keywords": [
+    "geometry"
+  ],
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "grunt build"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "browserify": "*",
+    "grunt": "*",
+    "grunt-browserify": "*",
+    "grunt-bump": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-jscs": "*",
+    "grunt-mocha-cli": "*"
+  }
+}

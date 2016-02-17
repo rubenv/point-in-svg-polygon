@@ -1,0 +1,20 @@
+{
+  "name": "point-in-svg-polygon",
+  "version": "0.0.0",
+  "authors": [
+    "Ruben Vermeersch <ruben@rocketeer.be>"
+  ],
+  "description": "Determine if a point is inside an SVG polygon.",
+  "main": "dist/point-in-svg-polygon.js",
+  "keywords": [
+    "geometry"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "lib",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}

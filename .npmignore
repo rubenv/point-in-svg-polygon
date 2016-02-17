@@ -1,0 +1,7 @@
+/node_modules
+/dist
+/Gruntfile.js
+/test
+/.jshintrc
+/.travis.yml
+/bower.json
