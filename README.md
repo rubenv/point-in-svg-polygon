@@ -1,8 +1,11 @@
-# point-in-svg-polygon - Determine if an point is inside a polygon
+# point-in-svg-polygon
+
+> Determine if an point is inside a polygon
 
 [![Build Status](https://travis-ci.org/rubenv/point-in-svg-polygon.png?branch=master)](https://travis-ci.org/rubenv/point-in-svg-polygon)
 
-Works with arbitrary polygons (as in: curves!).
+Works with arbitrary polygons (as in: curves!) and is usable in Node.JS as well
+as in your browser (through Browserify).
 
 ## What it does
 
@@ -50,8 +53,9 @@ This is useful if you have to test a lot of points.
 
 ## Credits
 
-Originally based on the work by Kevin Lindsey. Severly trimmed down: 3Kb
-footprint when minified, drops down to 1.5Kb when gzipped.
+Originally based on [the work by Kevin
+Lindsey](http://www.kevlindev.com/geometry/2D/intersections/index.htm). Severly
+trimmed down: 3Kb footprint when minified, drops down to 1.5Kb when gzipped.
 
 ## License 
 
