@@ -10,21 +10,7 @@ Given an SVG path and a point, it'll tell you whether the point lies within the 
 
 For instance:
 
-<svg width="501px" height="501px" viewBox="0 0 1002 1002" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M1,410.783346 C1,410.783346 367.927991,-268.832584 690.790889,122.379343 C1013.65379,513.591271 1181.86718,1000.99997 701.429412,1001 C220.991638,1001.00003 1,410.783346 1,410.783346 Z" id="convex" stroke="red"></path>
-        <path d="M534.014412,494.680881 C326.331277,308.203524 1,363.849357 1,363.849357 C1,363.849357 372.038777,368.406101 575.846365,249.559994 C709.326852,171.723656 647.149274,-114.620488 794.047554,52.5114874 C880.564235,150.944932 575.763914,321.305039 635.771341,423.044204 C725.233931,574.722915 865.834593,300.542794 942.264223,400.520234 C1034.51979,521.199548 1037.9573,1000.99998 806.278585,1001 C598.123901,1001.00001 659.610219,607.452552 534.014412,494.680881 Z" id="concave" stroke="blue"></path>
-    </g>
-    <g stroke="none" fill="red">
-        <circle cx="50"  cy="50"  r="6" id="point1" />
-        <circle cx="68"  cy="360" r="6" id="point2" fill="green" />
-        <circle cx="429" cy="360" r="6" id="point3" fill="green" />
-        <circle cx="858" cy="239" r="6" id="point4" />
-        <circle cx="735" cy="385" r="6" id="point5" fill="blue" />
-        <circle cx="990" cy="990" r="6" id="point6" />
-        <circle cx="749" cy="91"  r="6" id="point6" fill="orange" />
-    </g>
-</svg>
+![example shapes](example.png)
 
 Color  | Inside red shape (convex)? | Inside blue shape (concave)?
 ------ | -------------------------- | ----------------------------
