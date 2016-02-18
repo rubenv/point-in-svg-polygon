@@ -50,7 +50,8 @@ This is useful if you have to test a lot of points.
 
 ## Credits
 
-Originally based on the work by Kevin Lindsey. Severly trimmed down.
+Originally based on the work by Kevin Lindsey. Severly trimmed down: 3Kb
+footprint when minified, drops down to 1.5Kb when gzipped.
 
 ## License 
 
