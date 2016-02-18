@@ -194,7 +194,7 @@ function splitSegments(polygon) {
             }
             break;
         case "L":
-            if (!coordEqual(lastCoord, firstCoord)) {
+            if (!coordEqual(lastCoord, firstCoord) || result.length === 0) {
                 var lcoords = [lastCoord, coordSplit(part.substring(1))];
                 result.push({
                     type:   lineType,
