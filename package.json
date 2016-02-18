@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "browserify": "*",
+    "cheerio": "^0.20.0",
     "grunt": "*",
     "grunt-browserify": "*",
     "grunt-bump": "*",
