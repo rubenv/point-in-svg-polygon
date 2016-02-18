@@ -2,6 +2,12 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var bezier3Type = "bezier3";
 var lineType = "line";
 
+var mathAbs = Math.abs;
+var mathMax = Math.max;
+var mathMin = Math.min;
+var mathPow = Math.pow;
+var mathSqrt = Math.sqrt;
+
 var tolerance = 1e-6;
 
 function x(p) {
@@ -26,11 +32,11 @@ function coordEqual(c1, c2) {
 }
 
 function coordMax(c1, c2) {
-    return [Math.max(x(c1), x(c2)), Math.max(y(c1), y(c2))];
+    return [mathMax(x(c1), x(c2)), mathMax(y(c1), y(c2))];
 }
 
 function coordMin(c1, c2) {
-    return [Math.min(x(c1), x(c2)), Math.min(y(c1), y(c2))];
+    return [mathMin(x(c1), x(c2)), mathMin(y(c1), y(c2))];
 }
 
 function coordMultiply(c, f) {
@@ -63,7 +69,7 @@ function linearRoot(p2, p1) {
 function quadRoots(p3, p2, p1) {
     var results = [];
 
-    if (Math.abs(p3) <= tolerance) {
+    if (mathAbs(p3) <= tolerance) {
         return linearRoot(p2, p1);
     }
 
@@ -72,7 +78,7 @@ function quadRoots(p3, p2, p1) {
     var c = p1 / a;
     var d = b * b - 4 * c;
     if (d > 0) {
-        var e = Math.sqrt(d);
+        var e = mathSqrt(d);
         results.push(0.5 * (-b + e));
         results.push(0.5 * (-b - e));
     } else if (d === 0) {
@@ -83,7 +89,7 @@ function quadRoots(p3, p2, p1) {
 }
 
 function cubeRoots(p4, p3, p2, p1) {
-    if (Math.abs(p4) <= tolerance) {
+    if (mathAbs(p4) <= tolerance) {
         return quadRoots(p3, p2, p1);
     }
 
@@ -104,37 +110,37 @@ function cubeRoots(p4, p3, p2, p1) {
      * 0) which causes it not to be present there. Ironically, adding the
      * following code breaks the algorithm, whereas leaving it out makes it
      * work correctly.
-    if (Math.abs(discrim) <= tolerance) {
+    if (mathAbs(discrim) <= tolerance) {
         discrim = 0;
     }
     */
 
     var tmp;
     if (discrim > 0) {
-        var e = Math.sqrt(discrim);
+        var e = mathSqrt(discrim);
         tmp = -halfB + e;
-        var root = tmp >= 0 ? Math.pow(tmp, 1 / 3) : -Math.pow(-tmp, 1 / 3);
+        var root = tmp >= 0 ? mathPow(tmp, 1 / 3) : -mathPow(-tmp, 1 / 3);
         tmp = -halfB - e;
         if (tmp >= 0) {
-            root += Math.pow(tmp, 1 / 3);
+            root += mathPow(tmp, 1 / 3);
         } else {
-            root -= Math.pow(-tmp, 1 / 3);
+            root -= mathPow(-tmp, 1 / 3);
         }
         results.push(root - offset);
     } else if (discrim < 0) {
-        var distance = Math.sqrt(-a / 3);
-        var angle = Math.atan2(Math.sqrt(-discrim), -halfB) / 3;
+        var distance = mathSqrt(-a / 3);
+        var angle = Math.atan2(mathSqrt(-discrim), -halfB) / 3;
         var cos = Math.cos(angle);
         var sin = Math.sin(angle);
-        var sqrt3 = Math.sqrt(3);
+        var sqrt3 = mathSqrt(3);
         results.push(2 * distance * cos - offset);
         results.push(-distance * (cos + sqrt3 * sin) - offset);
         results.push(-distance * (cos - sqrt3 * sin) - offset);
     } else {
         if (halfB >= 0)  {
-            tmp = -Math.pow(halfB, 1 / 3);
+            tmp = -mathPow(halfB, 1 / 3);
         } else {
-            tmp = Math.pow(-halfB, 1 / 3);
+            tmp = mathPow(-halfB, 1 / 3);
         }
         results.push(2 * tmp - offset);
         results.push(-tmp - offset);
