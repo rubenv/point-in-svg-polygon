@@ -30,4 +30,10 @@ describe("Semi-circle", function () {
     testPoint([1000, 0], false);
     testPoint([1000, 500], false);
     testPoint([1000, 1000], false);
+
+    it("Can split segments in advance", function () {
+        var segments = pointInSvgPolygon.segments(polygon);
+        assert.equal(pointInSvgPolygon.isInside([0, 0], segments), false);
+        assert.equal(pointInSvgPolygon.isInside([500, 500], segments), true);
+    });
 });

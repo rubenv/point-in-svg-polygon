@@ -327,7 +327,13 @@ function countIntersects(point, shape) {
 }
 
 function isInside(point, polygon) {
-    var segments = splitSegments(polygon);
+    var segments;
+    if (polygon && Array.isArray(polygon)) {
+        segments = polygon;
+    } else {
+        segments = splitSegments(polygon);
+    }
+
     var intersections = 0;
     for (var i = 0; i < segments.length; i++) {
         var segment = segments[i];
