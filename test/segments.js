@@ -6,4 +6,19 @@ describe("Segments", function () {
         var result = pointInSvgPolygon.segments("M1,1 L2000,1 L2000,2000 L1,2000 Z");
         assert.equal(result.length, 4);
     });
+
+    it("Supports Illustrator craziness", function () {
+        var result = pointInSvgPolygon.segments("M867,605H211V200h656V605z");
+        assert.equal(result.length, 4);
+    });
+
+    it("Supports more Illustrator craziness", function () {
+        var result = pointInSvgPolygon.segments("M963,354c0,125.9-173,273-388.5,228C364.5,538.1,186,479.9,186,354S546.8-86.8,574.5,126C596,291,963,228.1,963,354z");
+        assert.equal(result.length, 4);
+    });
+
+    it("Handles operator omission", function () {
+        var result = pointInSvgPolygon.segments("M 100 200 L 200 100 -100 -200");
+        assert.equal(result.length, 2);
+    });
 });
