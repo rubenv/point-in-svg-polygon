@@ -68,4 +68,9 @@ describe("Point in SVG Polygon", function () {
     for (var i = 0; i < shapes.length; i++) {
         describe("Shape: " + shapes[i], testShape(shapes[i]));
     }
+
+    it("Correctly intersects at zero", function () {
+        var result = pointInSvgPolygon.isInside([10, 10], "M0,0 L155,0 L152.261719,62 L2.796875,62 L0,0 Z");
+        assert.equal(result, true);
+    });
 });
