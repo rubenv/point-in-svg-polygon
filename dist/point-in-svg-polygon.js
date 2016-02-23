@@ -294,7 +294,7 @@ function splitSegments(polygon) {
         case "Z":
         case "z":
             if (!coordEqual(position, start)) {
-                pushType(lineType)([position, start]);
+                pushType(lineType)([start]);
             }
             break;
         default:
