@@ -21,4 +21,9 @@ describe("Segments", function () {
         var result = pointInSvgPolygon.segments("M 100 200 L 200 100 -100 -200");
         assert.equal(result.length, 2);
     });
+
+    it("Handles initial relative moveTo", function () {
+        var result = pointInSvgPolygon.segments("m 85,109 c 0,2.76142 -2.238576,5 -5,5 -2.761424,0 -5,-2.23858 -5,-5 0,-2.76142 2.238576,-5 5,-5 2.761424,0 5,2.23858 5,5 z");
+        assert.equal(result.length, 5);
+    });
 });

@@ -249,6 +249,19 @@ function splitSegments(polygon) {
                 }
             });
             break;
+        case "m":
+            readCoords(1, function (c) {
+                if (!position) {
+                    position = c[0];
+                } else {
+                    position = [x(c) + x(position), y(c) + y(position)];
+                }
+
+                if (!start) {
+                    start = position;
+                }
+            });
+            break;
         case "C":
             readCoords(3, pushType(bezier3Type));
             break;
