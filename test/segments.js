@@ -26,4 +26,9 @@ describe("Segments", function () {
         var result = pointInSvgPolygon.segments("m 85,109 c 0,2.76142 -2.238576,5 -5,5 -2.761424,0 -5,-2.23858 -5,-5 0,-2.76142 2.238576,-5 5,-5 2.761424,0 5,2.23858 5,5 z");
         assert.equal(result.length, 5);
     });
+
+    it("Handles implicite moveTo", function () {
+        var result = pointInSvgPolygon.segments("m 212.5413,-8.3834813 52.39298,0 -1.02003,251.8031013 -49.92232,0 -1.45063,-251.8031013 z");
+        assert.equal(result.length, 5);
+    });
 });
