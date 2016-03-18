@@ -268,7 +268,8 @@ function splitSegments(polygon) {
                         start = position;
                     }
                 } else {
-                    pushType(lineType)(c, position);
+                    var c0 = c[0];
+                    pushType(lineType)([[x(c0) + x(position), y(c0) + y(position)]]);
                 }
             });
             break;

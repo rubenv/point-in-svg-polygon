@@ -31,4 +31,13 @@ describe("Segments", function () {
         var result = pointInSvgPolygon.segments("m 212.5413,-8.3834813 52.39298,0 -1.02003,251.8031013 -49.92232,0 -1.45063,-251.8031013 z");
         assert.equal(result.length, 5);
     });
+
+    it("Handles implicite moveTo (relative)", function () {
+        var result = pointInSvgPolygon.segments("m 1,1 2,3 z");
+        assert.equal(result.length, 2);
+        assert.deepEqual(result[0].coords[0], [1, 1]);
+        assert.deepEqual(result[0].coords[1], [3, 4]);
+        assert.deepEqual(result[1].coords[0], [3, 4]);
+        assert.deepEqual(result[1].coords[1], [1, 1]);
+    });
 });
