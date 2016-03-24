@@ -53,4 +53,11 @@ describe("Segments", function () {
         assert.deepEqual(result[3].coords[0], [228.7, 465 + 200.5]);
         assert.deepEqual(result[3].coords[1], [228.7, 465]);
     });
+
+    it("Handles exponents", function () {
+        var result = pointInSvgPolygon.segments("M 1,1e3 2,3");
+        assert.equal(result.length, 1);
+        assert.deepEqual(result[0].coords[0], [1, 1000]);
+        assert.deepEqual(result[0].coords[1], [2, 3]);
+    });
 });
