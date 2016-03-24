@@ -40,4 +40,17 @@ describe("Segments", function () {
         assert.deepEqual(result[1].coords[0], [3, 4]);
         assert.deepEqual(result[1].coords[1], [1, 1]);
     });
+
+    it("Handles coordinates correctly", function () {
+        var result = pointInSvgPolygon.segments("M228.7,465 h253.7 v200.5 h-253.7 Z");
+        assert.equal(result.length, 4);
+        assert.deepEqual(result[0].coords[0], [228.7, 465]);
+        assert.deepEqual(result[0].coords[1], [228.7 + 253.7, 465]);
+        assert.deepEqual(result[1].coords[0], [228.7 + 253.7, 465]);
+        assert.deepEqual(result[1].coords[1], [228.7 + 253.7, 465 + 200.5]);
+        assert.deepEqual(result[2].coords[0], [228.7 + 253.7, 465 + 200.5]);
+        assert.deepEqual(result[2].coords[1], [228.7, 465 + 200.5]);
+        assert.deepEqual(result[3].coords[0], [228.7, 465 + 200.5]);
+        assert.deepEqual(result[3].coords[1], [228.7, 465]);
+    });
 });
