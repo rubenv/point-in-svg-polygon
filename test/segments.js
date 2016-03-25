@@ -60,4 +60,9 @@ describe("Segments", function () {
         assert.deepEqual(result[0].coords[0], [1, 1000]);
         assert.deepEqual(result[0].coords[1], [2, 3]);
     });
+
+    it("Handles zero-length lines", function () {
+        var result = pointInSvgPolygon.segments("M0,0 L155,0 L152.261719,62 L2.796875,62 L0,0 L0,0 Z");
+        assert.equal(result.length, 4);
+    });
 });

@@ -55,7 +55,7 @@ This is useful if you have to test a lot of points.
 
 Originally based on [the work by Kevin
 Lindsey](http://www.kevlindev.com/geometry/2D/intersections/index.htm). Severly
-trimmed down: 4.4Kb footprint when minified, drops down to 2.0Kb when gzipped.
+trimmed down: 4.7Kb footprint when minified, drops down to 2.1Kb when gzipped.
 
 ## License 
 
