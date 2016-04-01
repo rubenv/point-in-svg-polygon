@@ -65,4 +65,13 @@ describe("Segments", function () {
         var result = pointInSvgPolygon.segments("M0,0 L155,0 L152.261719,62 L2.796875,62 L0,0 L0,0 Z");
         assert.equal(result.length, 4);
     });
+
+    it("Handles l-operator", function () {
+        var result = pointInSvgPolygon.segments("M1060.6,63.7l-21.8,79.5");
+        assert.equal(result.length, 1);
+        assert.equal(result[0].coords[0][0], 1060.6);
+        assert.equal(result[0].coords[0][1], 63.7);
+        assert.equal(result[0].coords[1][0], 1060.6 - 21.8);
+        assert.equal(result[0].coords[1][1], 63.7 + 79.5);
+    });
 });

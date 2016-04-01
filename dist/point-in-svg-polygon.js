@@ -250,6 +250,8 @@ function splitSegments(polygon) {
         var operator = polygon[0];
         polygon = polygon.substring(1);
 
+        var pushLine = pushType(lineType);
+
         switch (operator) {
         case "M":
             readCoords(1, function (c, i) {
@@ -308,6 +310,11 @@ function splitSegments(polygon) {
             break;
         case "L":
             readCoords(1, pushType(lineType));
+            break;
+        case "l":
+            readCoords(1, function (c) {
+                pushLine([[x(c[0]) + x(position), y(c[0]) + y(position)]]);
+            });
             break;
         case "H":
             pushType(lineType)([[readNumber(), y(position)]]);
