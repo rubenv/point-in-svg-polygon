@@ -158,9 +158,7 @@ function splitSegments(polygon) {
     var origin = [0, 0];
 
     function stripWhitespace() {
-        while (polygon[0] === " " || polygon[0] === "\n") {
-            polygon = polygon.substring(1);
-        }
+        polygon = polygon.trim();
     }
 
     function readCharSeq(n) {
