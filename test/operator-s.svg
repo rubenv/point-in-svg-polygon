@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path id="poly" fill="#F18E5D" d="M550.701,629.35c0,0-0.35,17.455,0,17.805s14.089,0,14.089,0v16.482h17.173v16.557h19.344v12.039h36.471v17.88c0,0-124.029,23.68-277.016-28.66l67.938-62.019l7.111-7.671l109.688-7.79l5.003,2.1L550.701,629.35z"/>
+    <circle id="s1" fill="#000000" cx="591" cy="694" r="2"></circle>
+    <circle id="s2" fill="#000000" cx="574" cy="653" r="2"></circle>
+    <circle id="s3" fill="#000000" cx="448" cy="625" r="2"></circle>
+    <circle id="s4" fill="#000000" cx="364" cy="660" r="2"></circle>
+    <circle id="s5" fill="#000000" cx="430" cy="711" r="2"></circle>
+</svg>
