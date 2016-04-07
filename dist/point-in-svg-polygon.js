@@ -239,6 +239,23 @@ function splitSegments(polygon) {
         };
     }
 
+    function calculateBezierControlPoint() {
+        var lastBezier = result[result.length - 1];
+        var controlPoint = null;
+        if (!lastBezier || lastBezier.type !== bezier3Type) {
+            controlPoint = position;
+        } else {
+            // Calculate the mirror point of the last control point
+            var lastPoint = lastBezier.coords[2];
+            var xOffset = x(position) - x(lastPoint);
+            var yOffset = y(position) - y(lastPoint);
+
+            controlPoint = [x(position) + xOffset, y(position) + yOffset];
+        }
+
+        return controlPoint;
+    }
+
     function readSegment() {
         stripWhitespace();
         if (polygon === "") {
@@ -269,7 +286,7 @@ function splitSegments(polygon) {
                     if (!position) {
                         position = c[0];
                     } else {
-                        position = [x(c) + x(position), y(c) + y(position)];
+                        position = coordAdd(c, position);
                     }
 
                     if (!start) {
@@ -277,7 +294,7 @@ function splitSegments(polygon) {
                     }
                 } else {
                     var c0 = c[0];
-                    pushType(lineType)([[x(c0) + x(position), y(c0) + y(position)]]);
+                    pushType(lineType)([coordAdd(c0, position)]);
                 }
             });
             break;
@@ -289,19 +306,15 @@ function splitSegments(polygon) {
             break;
         case "S":
             readCoords(2, function (coords) {
-                var lastBezier = result[result.length - 1];
-                var controlPoint = null;
-                if (!lastBezier || lastBezier.type !== bezier3Type) {
-                    controlPoint = position;
-                } else {
-                    // Calculate the mirror point of the last control point
-                    var lastPoint = lastBezier.coords[2];
-                    var xOffset = x(position) - x(lastPoint);
-                    var yOffset = y(position) - y(lastPoint);
-
-                    controlPoint = [x(position) + xOffset, y(position) + yOffset];
-                }
-
+                var controlPoint = calculateBezierControlPoint();
+                coords.unshift(controlPoint);
+                pushType(bezier3Type)(coords);
+            });
+            break;
+        case "s":
+            readCoords(2, function (coords) {
+                coords = coords.map(function (c) { return coordAdd(c, position); });
+                var controlPoint = calculateBezierControlPoint();
                 coords.unshift(controlPoint);
                 pushType(bezier3Type)(coords);
             });

@@ -74,4 +74,8 @@ describe("Segments", function () {
         assert.equal(result[0].coords[1][0], 1060.6 - 21.8);
         assert.equal(result[0].coords[1][1], 63.7 + 79.5);
     });
+
+    it("Handles s-operator", function () {
+        pointInSvgPolygon.segments("M550.701,629.35c0,0-0.35,17.455,0,17.805s14.089,0,14.089,0v16.482h17.173v16.557h19.344v12.039h36.471v17.88c0,0-124.029,23.68-277.016-28.66l67.938-62.019l7.111-7.671l109.688-7.79l5.003,2.1L550.701,629.35z");
+    });
 });
