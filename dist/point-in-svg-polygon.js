@@ -178,8 +178,7 @@ function arcToCurve(cp1, rx, ry, angle, large_arc, sweep, cp2, recurse) {
         xy = rotate(x2, y2, -rad);
         x2 = x(xy);
         y2 = y(xy);
-        //var cos = mathCos(mathPi / 180 * angle);
-        //var sin = mathSin(mathPi / 180 * angle);
+
         var px = (x1 - x2) / 2;
         var py = (y1 - y2) / 2;
         var h = (px * px) / (rx * rx) + (py * py) / (ry * ry);
