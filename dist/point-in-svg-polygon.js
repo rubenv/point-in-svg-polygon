@@ -3,10 +3,15 @@ var bezier3Type = "bezier3";
 var lineType = "line";
 
 var mathAbs = Math.abs;
+var mathAsin = Math.asin;
+var mathCos = Math.cos;
 var mathMax = Math.max;
 var mathMin = Math.min;
+var mathPi = Math.PI;
 var mathPow = Math.pow;
+var mathSin = Math.sin;
 var mathSqrt = Math.sqrt;
+var mathTan = Math.tan;
 
 var tolerance = 1e-6;
 
@@ -125,8 +130,8 @@ function cubeRoots(p4, p3, p2, p1) {
     } else if (discrim < 0) {
         var distance = mathSqrt(-a / 3);
         var angle = Math.atan2(mathSqrt(-discrim), -halfB) / 3;
-        var cos = Math.cos(angle);
-        var sin = Math.sin(angle);
+        var cos = mathCos(angle);
+        var sin = mathSin(angle);
         var sqrt3 = mathSqrt(3);
         results.push(2 * distance * cos - offset);
         results.push(-distance * (cos + sqrt3 * sin) - offset);
@@ -142,6 +147,133 @@ function cubeRoots(p4, p3, p2, p1) {
     }
 
     return results;
+}
+
+function arcToCurve(cp1, rx, ry, angle, large_arc, sweep, cp2, recurse) {
+    function rotate(cx, cy, r) {
+        var cos = mathCos(r);
+        var sin = mathSin(r);
+        return [
+            cx * cos - cy * sin,
+            cx * sin + cy * cos,
+        ];
+    }
+
+    var x1 = x(cp1);
+    var y1 = y(cp1);
+    var x2 = x(cp2);
+    var y2 = y(cp2);
+
+    var rad = mathPi / 180 * (+angle || 0);
+    var f1 = 0;
+    var f2 = 0;
+    var cx;
+    var cy;
+    var res = [];
+
+    if (!recurse) {
+        var xy = rotate(x1, y1, -rad);
+        x1 = x(xy);
+        y1 = y(xy);
+        xy = rotate(x2, y2, -rad);
+        x2 = x(xy);
+        y2 = y(xy);
+        //var cos = mathCos(mathPi / 180 * angle);
+        //var sin = mathSin(mathPi / 180 * angle);
+        var px = (x1 - x2) / 2;
+        var py = (y1 - y2) / 2;
+        var h = (px * px) / (rx * rx) + (py * py) / (ry * ry);
+        if (h > 1) {
+            h = mathSqrt(h);
+            rx = h * rx;
+            ry = h * ry;
+        }
+
+        var rx2 = rx * rx;
+        var ry2 = ry * ry;
+
+        var k = (large_arc === sweep ? -1 : 1)
+            * mathSqrt(mathAbs((rx2 * ry2 - rx2 * py * py - ry2 * px * px) / (rx2 * py * py + ry2 * px * px)));
+
+        cx = k * rx * py / ry + (x1 + x2) / 2;
+        cy = k * -ry * px / rx + (y1 + y2) / 2;
+        f1 = mathAsin(((y1 - cy) / ry).toFixed(9));
+        f2 = mathAsin(((y2 - cy) / ry).toFixed(9));
+
+        f1 = x1 < cx ? mathPi - f1 : f1;
+        f2 = x2 < cx ? mathPi - f2 : f2;
+
+        if (f1 < 0) {
+            f1 = mathPi * 2 + f1;
+        }
+        if (f2 < 0) {
+            f2 = mathPi * 2 + f2;
+        }
+        if (sweep && f1 > f2) {
+            f1 = f1 - mathPi * 2;
+        }
+        if (!sweep && f2 > f1) {
+            f2 = f2 - mathPi * 2;
+        }
+    } else {
+        f1 = recurse[0];
+        f2 = recurse[1];
+        cx = recurse[2];
+        cy = recurse[3];
+    }
+
+    var df = f2 - f1;
+    if (mathAbs(df) > mathPi * 120 / 180) {
+        var f2old = f2;
+        var x2old = x2;
+        var y2old = y2;
+
+        f2 = f1 + mathPi * 120 / 180 * (sweep && f2 > f1 ? 1 : -1);
+        x2 = cx + rx * mathCos(f2);
+        y2 = cy + ry * mathSin(f2);
+        res = arcToCurve([x2, y2], rx, ry, angle, 0, sweep, [x2old, y2old], [f2, f2old, cx, cy]);
+    }
+
+    df = f2 - f1;
+
+    var c1 = mathCos(f1);
+    var s1 = mathSin(f1);
+    var c2 = mathCos(f2);
+    var s2 = mathSin(f2);
+    var t = mathTan(df / 4);
+    var hx = 4 / 3 * rx * t;
+    var hy = 4 / 3 * ry * t;
+    var m1 = [x1, y1];
+    var m2 = [x1 + hx * s1, y1 - hy * c1];
+    var m3 = [x2 + hx * s2, y2 - hy * c2];
+    var m4 = [x2, y2];
+    m2[0] = 2 * m1[0] - m2[0];
+    m2[1] = 2 * m1[1] - m2[1];
+
+    function splitCurves(curves) {
+        var result = [];
+        while (curves.length > 0) {
+            result.push(curves.splice(0, 6));
+        }
+        return result.map(function (coords) {
+            return [
+                [coords[0], coords[1]],
+                [coords[2], coords[3]],
+                [coords[4], coords[5]],
+            ];
+        });
+    }
+
+    if (recurse) {
+        return splitCurves([m2, m3, m4].concat(res));
+    } else {
+        res = [m2, m3, m4].concat(res).join().split(",");
+        var newres = [];
+        for (var i = 0, ii = res.length; i < ii; i++) {
+            newres[i] = i % 2 ? rotate(res[i - 1], res[i], rad)[1] : rotate(res[i], res[i + 1], rad)[0];
+        }
+        return splitCurves(newres);
+    }
 }
 
 // Unpack an SVG path string into different curves and lines
@@ -205,21 +337,31 @@ function splitSegments(polygon) {
         }
     }
 
-    function readCoords(n, fn) {
+    function readNumbers(n, fn) {
         stripWhitespace();
         var index = 0;
         var c = polygon.charCodeAt(0);
         while ((c >= 48 && c <= 57) || c === 44 || c === 45) {
-            var coords = [];
+            var numbers = [];
             for (var i = 0; i < n; i++) {
-                coords.push([readNumber(), readNumber()]);
+                numbers.push(readNumber());
             }
-            fn(coords, index);
+            fn(numbers, index);
 
             stripWhitespace();
             c = polygon.charCodeAt(0);
             index++;
         }
+    }
+
+    function readCoords(n, fn) {
+        readNumbers(n * 2, function (numbers, index) {
+            var coords = [];
+            for (var i = 0; i < n; i++) {
+                coords.push(numbers.splice(0, 2));
+            }
+            fn(coords, index);
+        });
     }
 
     function pushType(itemType, offset) {
@@ -255,6 +397,17 @@ function splitSegments(polygon) {
         return controlPoint;
     }
 
+    function handleArcSegment(relative) {
+        readNumbers(7, function (numbers) {
+            var c2 = coordAdd(numbers.slice(5, 7), relative);
+            var args = [position].concat(numbers.slice(0, 5)).concat([c2]);
+            var curve = arcToCurve.apply(null, args);
+            for (var i = 0; i < curve.length; i++) {
+                pushType(bezier3Type)(curve[i]);
+            }
+        });
+    }
+
     function readSegment() {
         stripWhitespace();
         if (polygon === "") {
@@ -265,6 +418,7 @@ function splitSegments(polygon) {
         polygon = polygon.substring(1);
 
         var pushLine = pushType(lineType);
+        var origin = [0, 0];
 
         switch (operator) {
         case "M":
@@ -317,6 +471,12 @@ function splitSegments(polygon) {
                 coords.unshift(controlPoint);
                 pushType(bezier3Type)(coords);
             });
+            break;
+        case "A":
+            handleArcSegment(origin);
+            break;
+        case "a":
+            handleArcSegment(position);
             break;
         case "L":
             readCoords(1, pushType(lineType));
