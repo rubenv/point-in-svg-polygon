@@ -324,14 +324,23 @@ function splitSegments(polygon) {
             var num = toFloat(s);
             polygon = polygon.substring(end);
             if (polygon.length && polygon[0].toLowerCase() === "e") {
-                var expEnd = readCharSeq(1);
+                var f = 1;
+                var expEnd = 0;
+                if (polygon.length > 1 && polygon[1] === "-") {
+                    f = -1;
+                    expEnd = readCharSeq(2);
+                } else {
+                    expEnd = readCharSeq(1);
+                }
                 var exp = toFloat(polygon.substring(1, expEnd));
-                if (exp > 0) {
+                if (mathAbs(exp) > 0) {
                     num *= mathPow(10, exp);
                 }
                 polygon = polygon.substring(expEnd);
             }
             return num;
+        } else {
+            throw new Error("Expected number: " + polygon);
         }
     }
 

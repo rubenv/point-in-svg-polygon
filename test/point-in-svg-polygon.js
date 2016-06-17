@@ -73,4 +73,10 @@ describe("Point in SVG Polygon", function () {
         var result = pointInSvgPolygon.isInside([10, 10], "M0,0 L155,0 L152.261719,62 L2.796875,62 L0,0 Z");
         assert.equal(result, true);
     });
+
+    it("Handles very small exponents", function () {
+        var p = "M 5.29551E-05 0 L 300 0 L 150 200 z";
+        var segments = pointInSvgPolygon.segments(p);
+        assert.equal(pointInSvgPolygon.isInside([50, 50], segments), true);
+    });
 });
