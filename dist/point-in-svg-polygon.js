@@ -513,7 +513,8 @@ function splitSegments(polygon) {
             break;
         default:
             throw new Error("Unknown operator: " + operator);
-        }
+        } // jscs:ignore validateIndentation
+        // ^ (jscs bug)
     }
 
     while (polygon.length > 0) {
@@ -650,7 +651,8 @@ function getIntersections(zero, point, shape) {
         return intersectLineLine(coords[0], coords[1], zero, point);
     default:
         throw new Error("Unsupported shape type: " + shape.type);
-    }
+    } // jscs:ignore validateIndentation
+    // ^ (jscs bug)
 }
 
 function isInside(point, polygon) {

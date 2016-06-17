@@ -24,16 +24,16 @@
     "test": "test"
   },
   "devDependencies": {
-    "browserify": "*",
+    "browserify": "~13.0.1",
     "cheerio": "^0.20.0",
-    "grunt": "*",
-    "grunt-browserify": "*",
-    "grunt-bump": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-jscs": "*",
-    "grunt-mocha-cli": "*"
+    "grunt": "~1.0.1",
+    "grunt-browserify": "~5.0.0",
+    "grunt-bump": "~0.8.0",
+    "grunt-contrib-clean": "~1.0.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-contrib-uglify": "~1.0.1",
+    "grunt-contrib-watch": "~1.0.0",
+    "grunt-jscs": "~3.0.0",
+    "grunt-mocha-cli": "~2.1.0"
   }
 }
