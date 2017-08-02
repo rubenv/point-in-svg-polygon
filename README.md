@@ -59,6 +59,7 @@ trimmed down: 6.3Kb footprint when minified, drops down to 2.9Kb when gzipped.
 
 ## License 
 
+    Copyright (c) 2017, Levi Wiseman
     Copyright (c) 2016, Ruben Vermeersch
     Copyright (c) 2013, Kevin Lindsey
     All rights reserved.

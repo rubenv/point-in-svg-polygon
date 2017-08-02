@@ -7,6 +7,9 @@
     "email": "ruben@rocketeer.be",
     "url": "https://rocketeer.be/"
   },
+  "contributors": [
+    "Levi Wiseman <levi@codeaholic.com> (http://codeaholic.com)"
+  ],
   "homepage": "https://github.com/rubenv/point-in-svg-polygon",
   "repository": {
     "type": "git",
