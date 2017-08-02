@@ -1,12 +1,15 @@
 {
   "name": "point-in-svg-polygon",
   "description": "Determine if a point is inside an SVG polygon.",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "author": {
     "name": "Ruben Vermeersch",
     "email": "ruben@rocketeer.be",
     "url": "https://rocketeer.be/"
   },
+  "contributors": [
+    "Levi Wiseman <levi@codeaholic.com> (http://codeaholic.com)"
+  ],
   "homepage": "https://github.com/rubenv/point-in-svg-polygon",
   "repository": {
     "type": "git",
