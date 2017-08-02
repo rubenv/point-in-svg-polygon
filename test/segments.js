@@ -78,4 +78,22 @@ describe("Segments", function () {
     it("Handles s-operator", function () {
         pointInSvgPolygon.segments("M10,10 s10,10 15,15 s10,10 15,15");
     });
+
+    it("Handles Q-operator", function () {
+        var result = pointInSvgPolygon.segments("M50,75 Q234,54 56567,565");
+        assert.equal(result.length, 1);
+        assert.deepEqual(result[0].coords[0], [50, 75]);
+        assert.deepEqual(result[0].coords[1], [172.66666666666666, 61]);
+        assert.deepEqual(result[0].coords[2], [19011.66666666667, 224.33333333333337]);
+        assert.deepEqual(result[0].coords[3], [56567, 565]);
+    });
+
+    it("Handles q-operator", function () {
+        var result = pointInSvgPolygon.segments("M50,75 q10,-10 54,763");
+        assert.equal(result.length, 1);
+        assert.deepEqual(result[0].coords[0], [50, 75]);
+        assert.deepEqual(result[0].coords[1], [56.666666666666664, 68.33333333333333]);
+        assert.deepEqual(result[0].coords[2], [74.66666666666667, 322.66666666666674]);
+        assert.deepEqual(result[0].coords[3], [104, 838]);
+    });
 });
