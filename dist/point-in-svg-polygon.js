@@ -285,6 +285,7 @@ function splitSegments(polygon) {
     var start = null;
     var position = null;
     var result = [];
+    var input = polygon;
 
     function stripWhitespace() {
         polygon = polygon.trim();
@@ -540,7 +541,7 @@ function splitSegments(polygon) {
             }
             break;
         default:
-            throw new Error("Unknown operator: " + operator);
+            throw new Error("Unknown operator: " + operator + " for polygon '" + input + "'");
         } // jscs:ignore validateIndentation
         // ^ (jscs bug)
     }
