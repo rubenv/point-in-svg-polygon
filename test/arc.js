@@ -38,4 +38,12 @@ describe("Arcs", function () {
             [567.92, 392 - 66],
         ]);
     });
+
+    it("Should correctly determine  point containment within a circle made of two arcs", function () {
+        const insideIsTrue = pointInSvgPolygon.isInside([25, 25], "M-50,0A50,50,0,1,0,50,0A50,50,0,1,0,-50,0");
+        const insideIsFalse = pointInSvgPolygon.isInside([125, 125], "M-50,0A50,50,0,1,0,50,0A50,50,0,1,0,-50,0");
+
+        assert.equal(insideIsTrue, true);
+        assert.equal(insideIsFalse, false);
+    });
 });
