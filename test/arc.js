@@ -46,4 +46,15 @@ describe("Arcs", function () {
         assert.equal(insideIsTrue, true);
         assert.equal(insideIsFalse, false);
     });
+
+    it("should yield correct segments for path containing two arcs", function () {
+        const segments = (pointInSvgPolygon.segments("M359,200a59,59,0,1,1-59-59A59,59,0,0,1,359,200Z"));
+
+        assertSegment(segments[3], "bezier3", [
+            [300, 141],
+            [332.5848002400168, 141],
+            [359, 167.41519975998318],
+            [359, 200],
+        ]);
+    });
 });
