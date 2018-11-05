@@ -35,6 +35,9 @@ function splitArray(n) {
     };
 }
 
+var splitArray3 = splitArray(3);
+var splitArray2 = splitArray(2);
+
 function toFloat(v) {
     return parseFloat(v, 10);
 }
@@ -262,8 +265,8 @@ function arcToCurve(cp1, rx, ry, angle, large_arc, sweep, cp2, recurse) {
     m2[1] = 2 * m1[1] - m2[1];
 
     function splitCurves(curves) {
-        return splitArray(3)(
-            splitArray(2)(curves)
+        return splitArray3(
+            splitArray2(curves)
         );
     }
 
