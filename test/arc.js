@@ -38,4 +38,23 @@ describe("Arcs", function () {
             [567.92, 392 - 66],
         ]);
     });
+
+    it("Should correctly determine  point containment within a circle made of two arcs", function () {
+        const insideIsTrue = pointInSvgPolygon.isInside([25, 25], "M-50,0A50,50,0,1,0,50,0A50,50,0,1,0,-50,0");
+        const insideIsFalse = pointInSvgPolygon.isInside([125, 125], "M-50,0A50,50,0,1,0,50,0A50,50,0,1,0,-50,0");
+
+        assert.equal(insideIsTrue, true);
+        assert.equal(insideIsFalse, false);
+    });
+
+    it("should yield correct segments for path containing two arcs", function () {
+        const segments = (pointInSvgPolygon.segments("M359,200a59,59,0,1,1-59-59A59,59,0,0,1,359,200Z"));
+
+        assertSegment(segments[3], "bezier3", [
+            [300, 141],
+            [332.5848002400168, 141],
+            [359, 167.41519975998318],
+            [359, 200],
+        ]);
+    });
 });
