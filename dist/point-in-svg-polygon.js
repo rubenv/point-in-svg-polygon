@@ -270,7 +270,7 @@ function arcToCurve(cp1, rx, ry, angle, large_arc, sweep, cp2, recurse) {
     if (recurse) {
         return splitCurves([m2, m3, m4].concat(res));
     } else {
-        res = [m2, m3, m4].concat(res).join().split(","); // .filter(function (i) { return !!i.length; });
+        res = [m2, m3, m4].concat(res).join().split(",");
         var newres = [];
         for (var i = 0, ii = res.length; i < ii; i++) {
             newres[i] = i % 2 ? rotate(res[i - 1], res[i], rad)[1] : rotate(res[i], res[i + 1], rad)[0];
