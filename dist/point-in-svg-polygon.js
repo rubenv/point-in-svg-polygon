@@ -1,4 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"point-in-svg-polygon":[function(require,module,exports){
+require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"point-in-svg-polygon":[function(require,module,exports){
 var bezier3Type = "bezier3";
 var lineType = "line";
 
@@ -21,6 +21,18 @@ function x(p) {
 
 function y(p) {
     return p[1];
+}
+
+function splitArray(n) {
+    return function (array) {
+        return array.reduce(function (m, v, i, l) {
+            if (i % n) {
+                return m;
+            }
+
+            return m.concat([l.slice(i, i + n)]);
+        }, []);
+    };
 }
 
 function toFloat(v) {
@@ -250,22 +262,15 @@ function arcToCurve(cp1, rx, ry, angle, large_arc, sweep, cp2, recurse) {
     m2[1] = 2 * m1[1] - m2[1];
 
     function splitCurves(curves) {
-        var result = [];
-        while (curves.length > 0) {
-            result.push([
-                [curves[0], curves[1]],
-                [curves[2], curves[3]],
-                [curves[4], curves[5]],
-            ]);
-            curves.splice(0, 6);
-        }
-        return result;
+        return splitArray(3)(
+            splitArray(2)(curves)
+        );
     }
 
     if (recurse) {
         return splitCurves([m2, m3, m4].concat(res));
     } else {
-        res = [m2, m3, m4].concat(res).join().split(",");
+        res = [m2, m3, m4].concat(res).join().split(","); // .filter(function (i) { return !!i.length; });
         var newres = [];
         for (var i = 0, ii = res.length; i < ii; i++) {
             newres[i] = i % 2 ? rotate(res[i - 1], res[i], rad)[1] : rotate(res[i], res[i + 1], rad)[0];
@@ -390,11 +395,11 @@ function splitSegments(polygon) {
 
     function calculateCubicControlPoints(coords) {
         return [coords[0], [
-          x(coords[0]) + 2.0 / 3.0 * (x(coords[1]) - x(coords[0])),
-          y(coords[0]) + 2.0 / 3.0 * (y(coords[1]) - y(coords[0])),
+            x(coords[0]) + 2.0 / 3.0 * (x(coords[1]) - x(coords[0])),
+            y(coords[0]) + 2.0 / 3.0 * (y(coords[1]) - y(coords[0])),
         ], [
-          x(coords[2]) + 2.0 / 3.0 * (x(coords[1]) - x(coords[2])),
-          y(coords[2]) + 2.0 / 3.0 * (y(coords[1]) - y(coords[2])),
+            x(coords[2]) + 2.0 / 3.0 * (x(coords[1]) - x(coords[2])),
+            y(coords[2]) + 2.0 / 3.0 * (y(coords[1]) - y(coords[2])),
         ], coords[2],
         ];
     }
@@ -440,108 +445,108 @@ function splitSegments(polygon) {
         var origin = [0, 0];
 
         switch (operator) {
-        case "M":
-            readCoords(1, function (c, i) {
-                if (i === 0) {
-                    position = c[0];
-                    if (!start) {
-                        start = position;
-                    }
-                } else {
-                    pushType(lineType)(c);
-                }
-            });
-            break;
-        case "m":
-            readCoords(1, function (c, i) {
-                if (i === 0) {
-                    if (!position) {
+            case "M":
+                readCoords(1, function (c, i) {
+                    if (i === 0) {
                         position = c[0];
+                        if (!start) {
+                            start = position;
+                        }
                     } else {
-                        position = coordAdd(c, position);
+                        pushType(lineType)(c);
                     }
+                });
+                break;
+            case "m":
+                readCoords(1, function (c, i) {
+                    if (i === 0) {
+                        if (!position) {
+                            position = c[0];
+                        } else {
+                            position = coordAdd(c, position);
+                        }
 
-                    if (!start) {
-                        start = position;
+                        if (!start) {
+                            start = position;
+                        }
+                    } else {
+                        var c0 = c[0];
+                        pushType(lineType)([coordAdd(c0, position)]);
                     }
-                } else {
-                    var c0 = c[0];
-                    pushType(lineType)([coordAdd(c0, position)]);
+                });
+                break;
+            case "C":
+                readCoords(3, pushType(bezier3Type));
+                break;
+            case "c":
+                readCoords(3, pushType(bezier3Type, position));
+                break;
+            case "Q":
+                readCoords(2, function (coords) {
+                    coords.unshift(position);
+                    coords = calculateCubicControlPoints(coords);
+                    coords.shift();
+                    pushType(bezier3Type)(coords);
+                });
+                break;
+            case "q":
+                readCoords(2, function (coords) {
+                    coords = coords.map(function (c) { return coordAdd(c, position); });
+                    coords.unshift(position);
+                    coords = calculateCubicControlPoints(coords);
+                    coords.shift();
+                    pushType(bezier3Type)(coords);
+                });
+                break;
+            case "S":
+                readCoords(2, function (coords) {
+                    var controlPoint = calculateBezierControlPoint();
+                    coords.unshift(controlPoint);
+                    pushType(bezier3Type)(coords);
+                });
+                break;
+            case "s":
+                readCoords(2, function (coords) {
+                    var controlPoint = calculateBezierControlPoint();
+                    coords = coords.map(function (c) { return coordAdd(c, position); });
+                    coords.unshift(controlPoint);
+                    pushType(bezier3Type)(coords);
+                });
+                break;
+            case "A":
+                handleArcSegment(origin);
+                break;
+            case "a":
+                handleArcSegment(position);
+                break;
+            case "L":
+                readCoords(1, pushType(lineType));
+                break;
+            case "l":
+                readCoords(1, function (c) {
+                    pushLine([[x(c[0]) + x(position), y(c[0]) + y(position)]]);
+                });
+                break;
+            case "H":
+                pushType(lineType)([[readNumber(), y(position)]]);
+                break;
+            case "h":
+                pushType(lineType, position)([[readNumber(), 0]]);
+                break;
+            case "V":
+                pushType(lineType)([[x(position), readNumber()]]);
+                break;
+            case "v":
+                pushType(lineType, position)([[0, readNumber()]]);
+                break;
+            case "Z":
+            case "z":
+                if (!coordEqual(position, start)) {
+                    pushType(lineType)([start]);
                 }
-            });
-            break;
-        case "C":
-            readCoords(3, pushType(bezier3Type));
-            break;
-        case "c":
-            readCoords(3, pushType(bezier3Type, position));
-            break;
-        case "Q":
-            readCoords(2, function (coords) {
-                coords.unshift(position);
-                coords = calculateCubicControlPoints(coords);
-                coords.shift();
-                pushType(bezier3Type)(coords);
-            });
-            break;
-        case "q":
-            readCoords(2, function (coords) {
-                coords = coords.map(function (c) { return coordAdd(c, position); });
-                coords.unshift(position);
-                coords = calculateCubicControlPoints(coords);
-                coords.shift();
-                pushType(bezier3Type)(coords);
-            });
-            break;
-        case "S":
-            readCoords(2, function (coords) {
-                var controlPoint = calculateBezierControlPoint();
-                coords.unshift(controlPoint);
-                pushType(bezier3Type)(coords);
-            });
-            break;
-        case "s":
-            readCoords(2, function (coords) {
-                var controlPoint = calculateBezierControlPoint();
-                coords = coords.map(function (c) { return coordAdd(c, position); });
-                coords.unshift(controlPoint);
-                pushType(bezier3Type)(coords);
-            });
-            break;
-        case "A":
-            handleArcSegment(origin);
-            break;
-        case "a":
-            handleArcSegment(position);
-            break;
-        case "L":
-            readCoords(1, pushType(lineType));
-            break;
-        case "l":
-            readCoords(1, function (c) {
-                pushLine([[x(c[0]) + x(position), y(c[0]) + y(position)]]);
-            });
-            break;
-        case "H":
-            pushType(lineType)([[readNumber(), y(position)]]);
-            break;
-        case "h":
-            pushType(lineType, position)([[readNumber(), 0]]);
-            break;
-        case "V":
-            pushType(lineType)([[x(position), readNumber()]]);
-            break;
-        case "v":
-            pushType(lineType, position)([[0, readNumber()]]);
-            break;
-        case "Z":
-        case "z":
-            if (!coordEqual(position, start)) {
-                pushType(lineType)([start]);
-            }
-            break;
-        default:
-            throw new Error("Unknown operator: " + operator + " for polygon '" + input + "'");
+                break;
+            default:
+                throw new Error("Unknown operator: " + operator + " for polygon '" + input + "'");
         } // jscs:ignore validateIndentation
         // ^ (jscs bug)
     }
@@ -674,12 +679,12 @@ function intersectLineLine(a1, a2, b1, b2) {
 function getIntersections(zero, point, shape) {
     var coords = shape.coords;
     switch (shape.type) {
-    case bezier3Type:
-        return intersectBezier3Line(coords[0], coords[1], coords[2], coords[3], zero, point);
-    case lineType:
-        return intersectLineLine(coords[0], coords[1], zero, point);
-    default:
-        throw new Error("Unsupported shape type: " + shape.type);
+        case bezier3Type:
+            return intersectBezier3Line(coords[0], coords[1], coords[2], coords[3], zero, point);
+        case lineType:
+            return intersectLineLine(coords[0], coords[1], zero, point);
+        default:
+            throw new Error("Unsupported shape type: " + shape.type);
     } // jscs:ignore validateIndentation
     // ^ (jscs bug)
 }
