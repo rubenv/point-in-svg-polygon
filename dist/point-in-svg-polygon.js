@@ -1,4 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"point-in-svg-polygon":[function(require,module,exports){
+require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({"point-in-svg-polygon":[function(require,module,exports){
 var bezier3Type = "bezier3";
 var lineType = "line";
 
@@ -152,7 +152,7 @@ function cubeRoots(p4, p3, p2, p1) {
         results.push(-distance * (cos + sqrt3 * sin) - offset);
         results.push(-distance * (cos - sqrt3 * sin) - offset);
     } else {
-        if (halfB >= 0)  {
+        if (halfB >= 0) {
             tmp = -mathPow(halfB, 1 / 3);
         } else {
             tmp = mathPow(-halfB, 1 / 3);
@@ -316,12 +316,12 @@ function splitSegments(polygon) {
             end++;
         }
 
-        if (polygon[start] === "-") {
+        if (polygon[start] === "-" || polygon[start] === ".") {
             end++;
         }
 
         end = readCharSeq(end);
-        if (polygon[end] === ".") {
+        if (polygon[end] === "." && polygon[start] !== ".") {
             end++;
             end = readCharSeq(end);
         }
@@ -355,7 +355,7 @@ function splitSegments(polygon) {
         stripWhitespace();
         var index = 0;
         var c = polygon.charCodeAt(0);
-        while ((c >= 48 && c <= 57) || c === 44 || c === 45) {
+        while ((c >= 48 && c <= 57) || c === 44 || c === 45 || c === 46) {
             var numbers = [];
             for (var i = 0; i < n; i++) {
                 numbers.push(readNumber());
@@ -382,7 +382,7 @@ function splitSegments(polygon) {
         return function (c) {
             if (offset) {
                 c = c.map(function (c) {
-                    return [x(c) + x(offset), y(c) + y(offset)];
+                    return [x(c) + x(position), y(c) + y(position)];
                 });
             }
             c.unshift(position);
@@ -480,7 +480,7 @@ function splitSegments(polygon) {
                 readCoords(3, pushType(bezier3Type));
                 break;
             case "c":
-                readCoords(3, pushType(bezier3Type, position));
+                readCoords(3, pushType(bezier3Type, true));
                 break;
             case "Q":
                 readCoords(2, function (coords) {
@@ -532,13 +532,13 @@ function splitSegments(polygon) {
                 pushType(lineType)([[readNumber(), y(position)]]);
                 break;
             case "h":
-                pushType(lineType, position)([[readNumber(), 0]]);
+                pushType(lineType, true)([[readNumber(), 0]]);
                 break;
             case "V":
                 pushType(lineType)([[x(position), readNumber()]]);
                 break;
             case "v":
-                pushType(lineType, position)([[0, readNumber()]]);
+                pushType(lineType, true)([[0, readNumber()]]);
                 break;
             case "Z":
             case "z":

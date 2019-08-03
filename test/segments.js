@@ -24,7 +24,8 @@ describe("Segments", function () {
 
     it("Handles initial relative moveTo", function () {
         var result = pointInSvgPolygon.segments("m 85,109 c 0,2.76142 -2.238576,5 -5,5 -2.761424,0 -5,-2.23858 -5,-5 0,-2.76142 2.238576,-5 5,-5 2.761424,0 5,2.23858 5,5 z");
-        assert.equal(result.length, 5);
+        assert.equal(result.length, 4); //only 4 segments because the z operator does nothing
+        assert.equal(pointInSvgPolygon.isInside([77, 109], result), true);
     });
 
     it("Handles implicite moveTo", function () {
