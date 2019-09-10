@@ -121,4 +121,11 @@ describe("Segments", function () {
         assert.equal(segs.some(function (seg) { return pointInSvgPolygon.isInside([198, 282], seg); }), false);
         assert.equal(segs.some(function (seg) { return pointInSvgPolygon.isInside([0, 0], seg); }), false);
     });
+
+    it("should support a relative move to after a first move to", function () {
+        var result = pointInSvgPolygon.segments("M270,38 m17,25 L10 12");
+        assert.equal(result.length, 1);
+        assert.deepEqual(result[0].coords[0], [287, 63]);
+        assert.deepEqual(result[0].coords[1], [10, 12]);
+    });
 });
