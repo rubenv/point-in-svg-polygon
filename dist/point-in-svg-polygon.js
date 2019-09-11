@@ -464,7 +464,7 @@ function splitSegments(polygon) {
                         if (!position) {
                             position = c[0];
                         } else {
-                            position = coordAdd(c, position);
+                            position = coordAdd(c[0], position);
                         }
 
                         if (!start) {
