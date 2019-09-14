@@ -31,7 +31,7 @@ describe("Segments", function () {
 
     it("Handles implicite moveTo", function () {
         var result = pointInSvgPolygon.segments("m 212.5413,-8.3834813 52.39298,0 -1.02003,251.8031013 -49.92232,0 -1.45063,-251.8031013 z");
-        assert.equal(result.length, 5);
+        assert.equal(result.length, 4);
     });
 
     it("Handles implicite moveTo (relative)", function () {
@@ -127,5 +127,11 @@ describe("Segments", function () {
         assert.equal(result.length, 1);
         assert.deepEqual(result[0].coords[0], [287, 63]);
         assert.deepEqual(result[0].coords[1], [10, 12]);
+    });
+
+    it("should return true if the point is inside a rectangle, whatever the precision", function () {
+        var result = pointInSvgPolygon.segments("M 0 0 H360 V288 H 0 Z");
+        assert.equal(pointInSvgPolygon.isInside([88.741, 88.741], result), true);
+        assert.equal(pointInSvgPolygon.isInside([88.74, 88.74], result), true);
     });
 });
